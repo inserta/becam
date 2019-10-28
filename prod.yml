@@ -1,0 +1,50 @@
+version: '3'
+services:
+  becam_prod:
+    image: becam-backend:latest
+    stdin_open: true
+    tty: true
+    build:
+      context: ./becam
+      args:
+        environment: "prod"
+    container_name: becam-prod
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./becam/app:/home/develop
+      - ./logs:/logs
+      - prop-becam:/tmp/
+      - static-django-becam:/var/www/becam.com/
+    env_file:
+      - env/prod.env
+    command: gunicorn --workers=5 --threads=2 --log-level=error --access-logfile /logs/access.log  --error-logfile /logs/error.log, --log-file /logs/gunicorn.log -b unix:/tmp/becam.sock becam.wsgi:application
+    restart: unless-stopped
+
+  becam_nginx:
+    image: becam:latest
+    stdin_open: true
+    tty: true
+    build:
+      context: ./nginx
+      args:
+        environment: "prod"
+    container_name: becam_nginx_production
+    volumes:
+      - prop-becam:/tmp
+      - static-django-becam:/var/www/becam.com/
+      - ./logs:/logs
+      - ./becam/app:/home/develop
+      - /etc/letsencrypt/live/becam.com/fullchain.pem:/etc/letsencrypt/live/becam.com/fullchain.pem
+      - /etc/letsencrypt/live/becam.com/privkey.pem:/etc/letsencrypt/live/becam.com/privkey.pem
+      - ./build:/home/ubuntu/becam-backend/build/
+    ports:
+      - "80:80"
+      - "443:443"
+    env_file:
+      - env/prod.env
+    restart: unless-stopped
+
+volumes:
+  prop-becam:
+  static-django-becam:

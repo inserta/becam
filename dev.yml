@@ -1,0 +1,19 @@
+version: '3.0'
+services:
+  becam:
+    build:
+      context: ./becam
+      args:
+        environment: "dev"
+    container_name: 'becam-development'
+    stdin_open: true
+    tty: true
+    environment:
+      - PYTHONUNBUFFERED=1
+    env_file:
+      - env/dev.env
+    ports:
+      - "8000:8000"
+    volumes:
+      - './becam/app/:/home/develop'
+    command: /bin/bash -c 'sleep 10; python manage.py runserver 0.0.0.0:8000'
