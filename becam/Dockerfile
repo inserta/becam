@@ -20,8 +20,8 @@ RUN pip install -r /tmp/requirements/${environment}.txt
 
 
 
-#Add code django and package to application
-ADD ./app /$HOME_DIR
+#Add code flask and package to application
+ADD ./project /$HOME_DIR
 
 #Entry-point
 
