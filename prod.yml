@@ -15,10 +15,10 @@ services:
       - ./becam/app:/home/develop
       - ./logs:/logs
       - prop-becam:/tmp/
-      - static-django-becam:/var/www/becam.com/
+      - static-becam:/var/www/becam.com/
     env_file:
       - env/prod.env
-    command: gunicorn --workers=5 --threads=2 --log-level=error --access-logfile /logs/access.log  --error-logfile /logs/error.log, --log-file /logs/gunicorn.log -b unix:/tmp/becam.sock becam.wsgi:application
+    command: gunicorn --workers=5 --threads=2 --log-level=error --access-logfile /logs/access.log  --error-logfile /logs/error.log, --log-file /logs/gunicorn.log -b unix:/tmp/becam.sock manage:app
     restart: unless-stopped
 
   becam_nginx:
@@ -32,7 +32,7 @@ services:
     container_name: becam_nginx_production
     volumes:
       - prop-becam:/tmp
-      - static-django-becam:/var/www/becam.com/
+      - static-becam:/var/www/becam.com/
       - ./logs:/logs
       - ./becam/app:/home/develop
       - /etc/letsencrypt/live/becam.com/fullchain.pem:/etc/letsencrypt/live/becam.com/fullchain.pem
@@ -47,4 +47,4 @@ services:
 
 volumes:
   prop-becam:
-  static-django-becam:
+  static-becam:

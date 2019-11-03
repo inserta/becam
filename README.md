@@ -1,41 +1,48 @@
-##### Agregar archivos estáticos:  #####
+# Requisitos #
 
-```sudo docker-compose -f prod.yml run spacerental_prod python manage.py collectstatic --no-input ```
+Para poder ejecutar este proyecto, tanto en producción como en desarrollo, es necesario tener instalados lo siguiente:
+- Docker  (https://docs.docker.com/docker-for-windows/install/)
+- Docker componse (https://docs.docker.com/compose/install/)
 
-##### Ingresar al bash  #####
+En los enlaces que he puesto se encuentra la documentación del modo de instalación en los diferentes SO
 
-```sudo docker-compose -f prod.yml exec spacerental_prod bash ```
+# Ejecucion del proyecto #
 
-##### Running project #####
+Si es la primera vez que arrancas el proyecto debes ejecutar el siguiente comando para descargar y construir los conetenedores e imágenes necesarios para el proyecto
 
-First of all you have to install all package to the container to do this you need to run:
+``` docker-compose -f dev.yml build  ```
 
-```docker-compose -f dev.yml build```
+Si ya has construido el proyecto debes ejecutar el siguiente comando para ejecutarlo:
 
-After that commanad running successfully you need to create a env folder and then inside it create dev.env ask the folks by te enviromenta variables to set up inside it, after dev.env did set up run the next command:
+``` docker-compose -f dev.yml up --build ```
 
-```docker-compose -f dev.yml up```
+La bandera ```--build``` solo es necesario si se ha realizado algún cambio en la configuración de Docker, incluyendo las variables de entorno
 
-##### Create tenant #####
-
-To create tenant first you have to enter to the shell python from:
-
-``` python manage.py shell ```
-
-after that, you have to run the upcoming commands:
-
-```tenant = Client(domain_url='localhost', schema_name='public', name='public')```
-```tenant.save()```
+Si vas a ejecutar el proyecto en producción debes cambiar ````dev.yml```` por ```prod.yml``` y quitar la bandera ```-f```
 
 
-##### Create superuser tenant #####
 
-To create an user to tenant you have to run the upcoming command:
+## Ingresar al bash  ##
 
-```python manage.py createsuperuser --username=admin --schema=public```
+```sudo docker-compose -f dev.yml exec spacerental_prod bash ```
 
-Note:
+# Tecnologías #
+A continuación listo las principales librerías que he utilizado con enlaces a sus documentaciones oficiales
 
-if you have to create an user to specific tenant give the name tenant to --schema.
+- Python 3.7
+- Framework Flask 1.1.1 (https://flask.palletsprojects.com/en/1.1.x/)
+- Marshmallow (https://flask-marshmallow.readthedocs.io/en/latest/)
+- FTPlib (https://docs.python.org/3/library/ftplib.html)
+- Flask MongoAlchemy 0.7.2 (https://pythonhosted.org/Flask-MongoAlchemy/)
+- Flask-RestFul  0.3.7 (https://flask-restful.readthedocs.io/en/latest/)
 
-https://docs.python.org/3/library/ftplib.html
+# NOTAS #
+En ```.gitignore``` he comentado las lineas que a continuación listo para que se suban al repositrio y no tengaís problemas al arrancar el proyecto pero por seguridad es mejor no subir las variables de entorno al respositorio, cuando lo considiréis adecuando descomentarlo.
+
+- .env
+- .venv
+- env/
+- venv/
+- ENV/
+- env.bak/
+- venv.bak/
