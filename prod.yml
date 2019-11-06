@@ -15,10 +15,10 @@ services:
       - ./becam/app:/home/develop
       - ./logs:/logs
       - prop-becam:/tmp/
-      - static-becam:/var/www/becam.com/
+      - static-becam:/var/www/apibecam.becheckin.com/
     env_file:
       - env/prod.env
-    command: gunicorn --workers=5 --threads=2 --log-level=error --access-logfile /logs/access.log  --error-logfile /logs/error.log, --log-file /logs/gunicorn.log -b unix:/tmp/becam.sock manage:app
+    command: gunicorn --workers=5 --threads=2 --log-level=error --access-logfile /logs/access.log  --error-logfile /logs/error.log, --log-file /logs/gunicorn.log -b unix:/tmp/becam.sock manage:app --preload
     restart: unless-stopped
 
   becam_nginx:
@@ -32,18 +32,52 @@ services:
     container_name: becam_nginx_production
     volumes:
       - prop-becam:/tmp
-      - static-becam:/var/www/becam.com/
+      - static-becam:/var/www/apibecam.becheckin.com/
       - ./logs:/logs
       - ./becam/app:/home/develop
-      - /etc/letsencrypt/live/becam.com/fullchain.pem:/etc/letsencrypt/live/becam.com/fullchain.pem
-      - /etc/letsencrypt/live/becam.com/privkey.pem:/etc/letsencrypt/live/becam.com/privkey.pem
-      - ./build:/home/ubuntu/becam-backend/build/
+      # - /etc/letsencrypt/live/becam.com/fullchain.pem:/etc/letsencrypt/live/becam.com/fullchain.pem
+      # - /etc/letsencrypt/live/becam.com/privkey.pem:/etc/letsencrypt/live/becam.com/privkey.pem
+      # - ./build:/home/ubuntu/becam-backend/build/
     ports:
       - "80:80"
-      - "443:443"
+      # - "443:443"
     env_file:
       - env/prod.env
     restart: unless-stopped
+
+  socket_client_prod:
+    build:
+      context: ./becam
+      args:
+        environment: "prod"
+    container_name: 'socket-production'
+    stdin_open: true
+    tty: true
+    environment:
+      - PYTHONUNBUFFERED=1
+    env_file:
+      - env/prod.env
+    volumes:
+      - './becam/project/:/home/develop'
+    command: /bin/bash -c 'sleep 10; python -m app.tcp_client'
+
+  socket_server_prod:
+    build:
+      context: ./becam
+      args:
+        environment: "prod"
+    container_name: 'socketserver-production'
+    stdin_open: true
+    tty: true
+    environment:
+      - PYTHONUNBUFFERED=1
+    env_file:
+      - env/dev.env
+    ports:
+      - "9999:9999"
+    volumes:
+      - './becam/project/:/home/develop'
+    command: /bin/bash -c 'sleep 5; python -m app.tcp_server'
 
 volumes:
   prop-becam:

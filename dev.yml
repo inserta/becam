@@ -32,24 +32,22 @@ services:
       - env/dev.env
     volumes:
       - './becam/project/:/home/develop'
-    depends_on:
-      - db_mysql
     command: /bin/bash -c 'sleep 10; python -m app.tcp_client'
 
-    socket_server:
-      build:
-        context: ./becam
-        args:
-          environment: "dev"
-      container_name: 'socketserver-development'
-      stdin_open: true
-      tty: true
-      environment:
-        - PYTHONUNBUFFERED=1
-      env_file:
-        - env/dev.env
-      ports:
-        - "9999:9999"
-      volumes:
-        - './becam/project/:/home/develop'
-      command: /bin/bash -c 'sleep 5; python -m app.tcp_server'
+  socket_server:
+    build:
+      context: ./becam
+      args:
+        environment: "dev"
+    container_name: 'socketserver-development'
+    stdin_open: true
+    tty: true
+    environment:
+      - PYTHONUNBUFFERED=1
+    env_file:
+      - env/dev.env
+    ports:
+      - "9999:9999"
+    volumes:
+      - './becam/project/:/home/develop'
+    command: /bin/bash -c 'sleep 5; python -m app.tcp_server'
