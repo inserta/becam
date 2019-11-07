@@ -12,7 +12,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./becam/app:/home/develop
+      - ./becam/project:/home/develop
       - ./logs:/logs
       - prop-becam:/tmp/
       - static-becam:/var/www/apibecam.becheckin.com/

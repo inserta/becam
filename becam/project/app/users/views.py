@@ -9,8 +9,7 @@ from flask import request
 from flask_restful import fields, Resource, Api
 
 from app.users.documents import User, ImageUser
-from app.users.schemas import AssignImageSchema, UserSchema
-
+from app.users.schemas import AssignImageSchema, UserSchema, ImageUserSchema
 
 VERSION_API = "/api/v1/"
 
@@ -42,4 +41,13 @@ class UserResource(Resource):
             return err.messages
 
 
+class ImaegeResource(Resource):
+
+    def get(self):
+        return {
+            'images': ImageUserSchema(many=True).dump(ImageUser.query.all())
+        }
+
+
 api.add_resource(UserResource, VERSION_API + 'users')
+api.add_resource(ImaegeResource, VERSION_API + 'images')

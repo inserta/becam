@@ -2,7 +2,9 @@ from contextlib import closing
 import socket
 import json
 import time
-HOST, PORT = 'socket_server', 9999
+import os
+
+HOST, PORT = os.getenv('HOST_SOCKET_CLIENT'), 9999
 
 
 while 1:
@@ -11,7 +13,7 @@ while 1:
         measurements = {}
         measurements['temperature'] = 28.1
         measurements['humidity'] = 52.1
-        measurements['f_measurement'] =  '2019-02-10T21:55:37'
+        measurements['f_measurement'] = '2019-02-10T21:55:37'
         measurements['msystem'] = 1
         measurements = json.dumps(measurements)
         print(measurements)

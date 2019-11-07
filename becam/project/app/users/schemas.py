@@ -13,6 +13,12 @@ class UserSchema(ma.Schema):
     image = fields.String()
 
 
+class ImageUserSchema(ma.Schema):
+    image = fields.String()
+    created = fields.DateTime()
+    user = fields.String()
+
+
 class AssignImageSchema(ma.Schema):
     user_identifier = fields.String(required=True)
     username = fields.String(required=True)

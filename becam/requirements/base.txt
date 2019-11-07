@@ -1,5 +1,7 @@
 aniso8601==8.0.0
 Click==7.0
+cmake==3.15.3
+dlib==19.18.0
 Flask==1.1.1
 flask-marshmallow==0.10.1
 Flask-MongoAlchemy==0.7.2
@@ -9,6 +11,8 @@ Jinja2==2.10.3
 MarkupSafe==1.1.1
 marshmallow==3.2.1
 MongoAlchemy==0.19
+numpy==1.17.3
+opencv-contrib-python==4.1.1.26
 pymongo==2.8.1
 pytz==2019.3
 six==1.12.0
