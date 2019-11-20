@@ -20,7 +20,7 @@ services:
 
   socket:
     build:
-      context: ./becam
+      context: ./becam_client
       args:
         environment: "dev"
     container_name: 'socket-development'
@@ -31,12 +31,12 @@ services:
     env_file:
       - env/dev.env
     volumes:
-      - './becam/project/:/home/develop'
-    command: /bin/bash -c 'sleep 10; python -m app.tcp_client'
+      - './becam_client/client/:/home/develop'
+    command: /bin/sh -c 'sleep 10; python -m tcp_client'
 
   socket_server:
     build:
-      context: ./becam
+      context: ./becam_server
       args:
         environment: "dev"
     container_name: 'socketserver-development'
@@ -49,5 +49,5 @@ services:
     ports:
       - "9999:9999"
     volumes:
-      - './becam/project/:/home/develop'
-    command: /bin/bash -c 'sleep 5; python -m app.tcp_server'
+      - './becam_server/server/:/home/develop'
+    command: /bin/sh -c 'sleep 5; python -m tcp_server'
