@@ -23,7 +23,7 @@ RUN mkdir /tmp/requirements && mkdir -p /$HOME_DIR && \
 
 
 #Add code
-ADD . /$HOME_DIR
+ADD ./client /$HOME_DIR
 
 #Entry-point
 

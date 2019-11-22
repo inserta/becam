@@ -48,7 +48,7 @@ services:
   socket_client_prod:
     image: jimyfc/socket_client:latest
     build:
-      context: ./becam
+      context: ./becam_client
       args:
         environment: "prod"
     container_name: 'socket-production'
@@ -59,13 +59,13 @@ services:
     env_file:
       - env/prod.env
     volumes:
-      - './becam_client/client/:/home/develop'
-    command: /bin/bash -c 'sleep 10; python -m app.tcp_client'
+      - './becam_client/client:/home/develop'
+    command: /bin/sh -c 'sleep 10; python -m tcp_client'
 
   socket_server_prod:
     image: jimyfc/socket_server:latest
     build:
-      context: ./becam
+      context: ./becam_server
       args:
         environment: "prod"
     container_name: 'socketserver-production'
@@ -74,12 +74,12 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
     env_file:
-      - env/dev.env
+      - env/prod.env
     ports:
       - "9999:9999"
     volumes:
-      - './becam_server/server/:/home/develop'
-    command: /bin/bash -c 'sleep 5; python -m app.tcp_server'
+      - './becam_server/server:/home/develop'
+    command: /bin/sh -c 'sleep 5; python -m tcp_server'
 
 volumes:
   prop-becam:
