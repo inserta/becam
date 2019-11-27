@@ -39,8 +39,8 @@ services:
       # - /etc/letsencrypt/live/becam.com/privkey.pem:/etc/letsencrypt/live/becam.com/privkey.pem
       # - ./build:/home/ubuntu/becam-backend/build/
     ports:
-      - "80:80"
-      # - "443:443"
+      - "11000:80"
+      - "443:443"
     env_file:
       - env/prod.env
     restart: unless-stopped
