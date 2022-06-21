@@ -11,7 +11,7 @@ Jinja2==2.10.3
 MarkupSafe==1.1.1
 marshmallow==3.2.1
 MongoAlchemy==0.19
-numpy==1.17.3
+numpy==1.22.0
 opencv-contrib-python==4.1.1.26
 pymongo==2.8.1
 pytz==2019.3
